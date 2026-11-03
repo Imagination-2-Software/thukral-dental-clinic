@@ -430,7 +430,7 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             
             {/* Instagram Card */}
             <a 
@@ -474,29 +474,6 @@ const About = () => {
               </p>
               <div className="mt-auto text-[#D4C3B3] font-medium text-sm flex items-center gap-1.5 opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
                 <span>Connect With Us</span>
-                <span className="font-bold">&rarr;</span>
-              </div>
-            </a>
-
-            {/* Google Business Profile Card */}
-            <a 
-              href="https://share.google/DTUJBH7NBMFoJAsx" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="group flex flex-col items-center bg-[#342C27] hover:bg-[#3D342E] p-8 md:p-10 rounded-[2rem] border border-[#50443B] hover:border-[#8C7A6B]/80 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer text-center"
-            >
-              <div className="w-16 h-16 rounded-full bg-[#28221F] border border-[#50443B] flex items-center justify-center text-[#E8B98A] group-hover:border-[#E8B98A]/60 group-hover:scale-105 transition-all duration-300 mb-6 shadow-inner">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#E8B98A] transition-colors duration-300">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-serif text-[#F5F0E8] mb-3 group-hover:text-[#FFFFFF] transition-colors">Google</h3>
-              <p className="text-sm text-[#BDB1A5] font-light leading-relaxed mb-6">
-                Explore our clinic, reviews, location and patient experiences.
-              </p>
-              <div className="mt-auto text-[#D4C3B3] font-medium text-sm flex items-center gap-1.5 opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                <span>Find On Google</span>
                 <span className="font-bold">&rarr;</span>
               </div>
             </a>
