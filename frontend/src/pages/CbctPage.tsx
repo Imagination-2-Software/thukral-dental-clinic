@@ -7,9 +7,10 @@ import {
   Layers,
   Scan, 
   Activity, 
-  Sparkles,
   Calendar,
-  AlertTriangle
+  AlertTriangle,
+  X,
+  ZoomIn
 } from 'lucide-react';
 import InteractiveCbctScanner from '../components/InteractiveCbctScanner';
 import Hero3DViewerCard from '../components/Hero3DViewerCard';
@@ -65,6 +66,24 @@ const CbctPage = () => {
 
   // Section 3: Interactive 3D Imaging Multi-Planar Views State ('axial' | 'coronal' | 'sagittal' | 'volume')
   const [activeSliceView, setActiveSliceView] = useState<'axial' | 'coronal' | 'sagittal' | 'volume'>('volume');
+
+  // Treatment suite image zoom modal state
+  const [isImageZoomed, setIsImageZoomed] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isImageZoomed) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsImageZoomed(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isImageZoomed]);
 
   const faqs = [
     {
@@ -1099,31 +1118,34 @@ const CbctPage = () => {
               </div>
             </div>
 
-            {/* Right: Imaging Room Photograph Placeholder */}
+            {/* Right: Imaging Room Photograph */}
             <div className="w-full lg:w-2/5 flex justify-center">
-              <div className="w-full max-w-[340px] aspect-[3/4] rounded-2xl bg-gradient-to-br from-[#2E241E] via-[#211A16] to-[#171310] border border-[#3E322A] p-6 flex flex-col justify-between text-left shadow-xl group">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono tracking-widest text-[#E8D8C4]/70 uppercase px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.08]">
-                    ROOM SETUP
-                  </span>
-                  <Sparkles size={14} className="text-[#C5A880]" />
-                </div>
+              <div 
+                onClick={() => setIsImageZoomed(true)}
+                className="w-full max-w-[460px] aspect-[4/3] rounded-2xl overflow-hidden relative border border-border/80 shadow-xl group bg-background-secondary cursor-pointer"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setIsImageZoomed(true);
+                  }
+                }}
+                aria-label="Click to zoom clinical imaging and treatment suite"
+              >
+                <img
+                  src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793620442/060a0ead-38ce-408d-afe5-c57fd6bd7bde.jpg"
+                  alt="Clinical treatment room and radiography suite at Thukral Dental & Aesthetic Clinic"
+                  className="w-full h-full object-cover object-[10%_center] transform transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
 
-                <div className="my-auto text-center py-4">
-                  <div className="w-14 h-14 rounded-full bg-[#FAF8F5]/[0.08] border border-[#FAF8F5]/20 flex items-center justify-center text-[#C5A880] mx-auto mb-3">
-                    <Scan size={24} />
+                {/* Subtle hover zoom indicator */}
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 text-white text-xs font-medium tracking-wide backdrop-blur-md border border-white/20 shadow-lg">
+                    <ZoomIn size={14} />
+                    <span>Tap to zoom</span>
                   </div>
-                  <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#FAF8F5] block mb-1">
-                    [CLINIC IMAGING ROOM]
-                  </span>
-                  <p className="text-[11px] text-[#E8D8C4]/60 font-light">
-                    Protected dental radiography suite at Thukral Dental &amp; Aesthetic Clinic
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-white/[0.08] text-[10px] text-[#E8D8C4]/70 flex justify-between">
-                  <span>Non-invasive</span>
-                  <span className="text-[#C5A880]">Clean Protocol</span>
                 </div>
               </div>
             </div>
@@ -1226,6 +1248,36 @@ const CbctPage = () => {
 
         </div>
       </section>
+
+      {/* Lightbox / Zoom Modal for Treatment Suite */}
+      {isImageZoomed && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setIsImageZoomed(false)}
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-pointer animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-5xl max-h-[90vh] flex flex-col items-center justify-center cursor-default"
+          >
+            <button
+              type="button"
+              onClick={() => setIsImageZoomed(false)}
+              className="absolute -top-12 right-0 text-white/80 hover:text-white text-sm font-mono tracking-widest uppercase cursor-pointer flex items-center gap-1.5 transition-colors"
+              aria-label="Close modal"
+            >
+              <span>Close</span>
+              <X size={18} />
+            </button>
+            <img
+              src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793620442/060a0ead-38ce-408d-afe5-c57fd6bd7bde.jpg"
+              alt="Clinical treatment room and radiography suite at Thukral Dental & Aesthetic Clinic"
+              className="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
 
     </div>
   );

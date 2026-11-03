@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
   Sparkles,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ArrowRight,
   ArrowDown,
   Quote,
@@ -72,6 +74,16 @@ const verifiedReviews = [
     text: 'The team is highly professional. The clinic maintains excellent hygiene and the teeth whitening and aligners treatments were explained clearly. I felt completely comfortable throughout the process.',
     tag: 'Hygiene & Clear Guidance',
   },
+  {
+    name: 'Saurabh Srivastava',
+    text: 'Extremely satisfied with the orthodontic care provided by Dr. Anchit Thukral. He patiently answered all queries and delivered outstanding alignment results.',
+    tag: 'Orthodontics',
+  },
+  {
+    name: 'Priya Sharma',
+    text: 'The best dental experience in Varanasi. Very hygienic, gentle procedures and no unnecessary treatments suggested. Highly recommend to everyone.',
+    tag: 'Gentle Dentistry',
+  },
 ];
 
 // Section 7: FAQs
@@ -106,9 +118,45 @@ const faqs = [
 const WhyThukralPage = () => {
   const { openModal } = useAppointmentModal();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [currentReviewSlide, setCurrentReviewSlide] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  // Group verified reviews into slides containing exactly 2 reviews each
+  const reviewSlides = useMemo(() => {
+    const pairs = [];
+    for (let i = 0; i < verifiedReviews.length; i += 2) {
+      pairs.push(verifiedReviews.slice(i, i + 2));
+    }
+    return pairs;
+  }, []);
+
+  const handleNextReviewSlide = useCallback(() => {
+    setCurrentReviewSlide((prev) => (prev + 1) % reviewSlides.length);
+  }, [reviewSlides.length]);
+
+  const handlePrevReviewSlide = useCallback(() => {
+    setCurrentReviewSlide((prev) => (prev - 1 + reviewSlides.length) % reviewSlides.length);
+  }, [reviewSlides.length]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        handleNextReviewSlide();
+      } else {
+        handlePrevReviewSlide();
+      }
+    }
+    setTouchStartX(null);
+  };
 
   useEffect(() => {
-    document.title = 'Why Thukral? | Thukral Dental & Aesthetic Clinic';
+    document.title = 'Why TDAC? | Thukral Dental & Aesthetic Clinic';
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
@@ -152,7 +200,7 @@ const WhyThukralPage = () => {
             {/* Left Content */}
             <div className="w-full lg:w-1/2 opacity-0 animate-fade-in-up">
               <span className="text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-primary mb-4 block">
-                WHY THUKRAL
+                WHY TDAC
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-[3.8rem] font-serif leading-[1.12] text-text mb-6">
                 Your Smile Deserves <br className="hidden sm:inline" />
@@ -557,46 +605,100 @@ const WhyThukralPage = () => {
             </p>
           </div>
 
-          {/* Genuine Reviews Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {verifiedReviews.map((rev, i) => (
+          {/* Motion Review Carousel Slider */}
+          <div
+            className="relative max-w-6xl mx-auto mb-16"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Sliding Track Viewport */}
+            <div className="overflow-hidden">
               <div
-                key={i}
-                className="bg-background border border-border rounded-2xl p-8 md:p-10 shadow-sm flex flex-col justify-between"
+                className="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                style={{ transform: `translateX(-${currentReviewSlide * 100}%)` }}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-1 text-amber-600">
-                      {[...Array(5)].map((_, s) => (
-                        <Star key={s} size={16} fill="currentColor" />
+                {reviewSlides.map((slidePair, slideIdx) => (
+                  <div key={slideIdx} className="w-full shrink-0 px-1 sm:px-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                      {slidePair.map((rev, revIdx) => (
+                        <div
+                          key={revIdx}
+                          className="bg-background border border-border rounded-2xl p-8 md:p-10 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow"
+                        >
+                          <div>
+                            <div className="flex items-center justify-between mb-6">
+                              <div className="flex items-center space-x-1 text-amber-600">
+                                {[...Array(5)].map((_, s) => (
+                                  <Star key={s} size={16} fill="currentColor" />
+                                ))}
+                              </div>
+                              <Quote size={22} className="text-primary/20" />
+                            </div>
+
+                            <p className="text-base md:text-lg text-text-muted font-serif italic leading-relaxed mb-6">
+                              "{rev.text}"
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-4 border-t border-border/60 mt-auto">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-serif font-bold text-base">
+                                {rev.name.charAt(0)}
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-text uppercase tracking-wider">
+                                  {rev.name}
+                                </p>
+                                <p className="text-xs text-text-muted">Verified Google Review</p>
+                              </div>
+                            </div>
+                            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                              {rev.tag}
+                            </span>
+                          </div>
+                        </div>
                       ))}
                     </div>
-                    <Quote size={22} className="text-primary/20" />
                   </div>
-
-                  <p className="text-base md:text-lg text-text-muted font-serif italic leading-relaxed mb-6">
-                    "{rev.text}"
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t border-border/60">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-serif font-bold text-base">
-                      {rev.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-text uppercase tracking-wider">
-                        {rev.name}
-                      </p>
-                      <p className="text-xs text-text-muted">Verified Google Review</p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                    {rev.tag}
-                  </span>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Slider Navigation Arrows & Dot Indicators */}
+            <div className="flex items-center justify-center gap-6 mt-10">
+              <button
+                type="button"
+                onClick={handlePrevReviewSlide}
+                className="w-12 h-12 rounded-full border border-border bg-background flex items-center justify-center text-text hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer focus:outline-none"
+                aria-label="Previous review slide"
+              >
+                <ChevronLeft size={20} strokeWidth={1.75} />
+              </button>
+
+              <div className="flex items-center gap-2">
+                {reviewSlides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentReviewSlide(idx)}
+                    className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                      idx === currentReviewSlide ? 'w-8 bg-primary' : 'w-2.5 bg-border hover:bg-primary/40'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNextReviewSlide}
+                className="w-12 h-12 rounded-full border border-border bg-background flex items-center justify-center text-text hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer focus:outline-none"
+                aria-label="Next review slide"
+              >
+                <ChevronRight size={20} strokeWidth={1.75} />
+              </button>
+            </div>
+
           </div>
 
           {/* Patient Video Testimonial */}

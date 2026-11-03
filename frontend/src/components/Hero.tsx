@@ -63,7 +63,7 @@ const Hero = () => {
           
           {/* Supporting Text */}
           <p className="text-[15px] md:text-lg text-text-muted mb-8 lg:mb-10 max-w-[420px] leading-relaxed font-light">
-            Advanced Dental & Aesthetic Care in Varanasi — designed around your comfort, confidence and smile.
+            Advanced Dental Care in Varanasi — designed around your comfort, confidence and smile.
           </p>
           
           {/* CTAs */}

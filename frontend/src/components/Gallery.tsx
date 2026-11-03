@@ -5,6 +5,9 @@ interface GalleryImage {
   url: string;
   alt: string;
   title: string;
+  orientation: 'landscape' | 'portrait' | 'square';
+  aspectRatio: string;
+  objectPosition?: string;
 }
 
 const environmentImages: GalleryImage[] = [
@@ -13,42 +16,54 @@ const environmentImages: GalleryImage[] = [
     url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/01.webp',
     alt: 'Thukral Dental & Aesthetic Clinic - State-of-the-art modern clinical treatment operatory',
     title: 'Modern Clinical Operatory',
+    orientation: 'landscape',
+    aspectRatio: '3:2',
+    objectPosition: 'object-center',
   },
   {
-    id: 'env-2',
-    url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/03.webp',
-    alt: 'Thukral Dental & Aesthetic Clinic - Patient consultation area and diagnostic facilities',
-    title: 'Consultation & Diagnostics',
-  },
-  {
-    id: 'env-3',
+    id: 'env-c1',
     url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664868/52688528_923426558006652_435400656069591040_n.jpg',
-    alt: 'Thukral Dental & Aesthetic Clinic - Reception and welcoming patient arrival lounge',
-    title: 'Patient Lounge & Reception',
+    alt: 'Thukral Dental & Aesthetic Clinic - Collaborative chairside clinical procedure session',
+    title: 'Clinical Operatory Session',
+    orientation: 'portrait',
+    aspectRatio: '3:4',
+    objectPosition: 'object-[center_15%]',
   },
   {
-    id: 'env-4',
-    url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/02.webp',
-    alt: 'Thukral Dental & Aesthetic Clinic - Gentle, personalized doctor-patient clinical interaction',
-    title: 'Thoughtful Patient Care',
+    id: 'env-c2',
+    url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664920/52720428_923426484673326_9035049136948248576_n.jpg',
+    alt: 'Thukral Dental & Aesthetic Clinic - Dedicated chairside dental treatment and clinical precision',
+    title: 'Chairside Procedure Precision',
+    orientation: 'portrait',
+    aspectRatio: '3:4',
+    objectPosition: 'object-[center_15%]',
   },
   {
-    id: 'env-5',
-    url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792665133/489908746_2626714064344551_8043259614026675697_n.jpg',
-    alt: 'Thukral Dental & Aesthetic Clinic - Sterilized treatment suite and ergonomic dental equipment',
-    title: 'Sterilization & Treatment Suite',
+    id: 'env-c3',
+    url: '/images/gallery/specialist-clinical-focus.jpg',
+    alt: 'Thukral Dental & Aesthetic Clinic - Focused dental specialist performing procedure under clinical illumination',
+    title: 'Specialist Clinical Focus',
+    orientation: 'portrait',
+    aspectRatio: '3:4',
+    objectPosition: 'object-[center_center]',
   },
   {
-    id: 'env-6',
-    url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792665135/489425975_2626714087677882_2677709627538054550_n.jpg',
-    alt: 'Thukral Dental & Aesthetic Clinic - Clinical precision operatory with high-grade hygiene',
-    title: 'Advanced Treatment Environment',
+    id: 'env-c4',
+    url: '/images/gallery/treatment-suite.jpg',
+    alt: 'Thukral Dental & Aesthetic Clinic - Comprehensive patient care and advanced operatory setting',
+    title: 'Comprehensive Treatment Suite',
+    orientation: 'portrait',
+    aspectRatio: '3:4',
+    objectPosition: 'object-[center_center]',
   },
   {
     id: 'env-7',
     url: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792665110/489457755_2626714481011176_5338931340936037231_n.jpg',
     alt: 'Thukral Dental & Aesthetic Clinic - Clinical exterior and welcoming practice ambiance in Varanasi',
     title: 'Practice Ambiance & Architecture',
+    orientation: 'landscape',
+    aspectRatio: '3:2',
+    objectPosition: 'object-center',
   },
 ];
 
@@ -73,17 +88,18 @@ const Gallery = () => {
         </div>
 
         {/* 
-          Asymmetric 7-Image Editorial Grid (3-column composition on desktop)
-          - Image 1 (Hero Feature): spans 2 cols and 2 rows for prominence (~2x standard size)
-          - Images 2 & 3: stacked on the 3rd column
-          - Images 4, 5, 6, 7: balanced row below
+          Balanced Responsive Editorial Gallery Grid (6 Images):
+          - Row 1: Featured Landscape Hero (2 cols on lg) + Clinical Portrait 1 (1 col on lg, identical row height)
+          - Row 2: Triple Portrait Showcase (3 cols on lg: Portrait 2, Portrait 3, Portrait 4 with matching heights & portrait alignment)
+          - Row 3: Panoramic Ambiance Feature (3 cols on lg, full-width cinematic architectural view)
+          Result: Zero empty spaces, perfect rectangular outer boundary, completely balanced on desktop, tablet, and mobile.
         */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
           
-          {/* Tile 1: Hero Featured Image (Spans 2 columns on desktop) */}
+          {/* Tile 1: Hero Featured Image (Landscape - 2 cols on lg & sm) */}
           <div
             onClick={() => setSelectedImage(environmentImages[0])}
-            className="sm:col-span-2 sm:row-span-2 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-xl hover:border-primary/40 transition-all duration-500 cursor-pointer min-h-[340px] sm:min-h-[460px] lg:min-h-[500px]"
+            className="sm:col-span-2 lg:col-span-2 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-xl hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[16/10] sm:aspect-auto sm:min-h-[440px] lg:min-h-[480px]"
           >
             <img
               src={environmentImages[0].url}
@@ -98,46 +114,46 @@ const Gallery = () => {
             </div>
           </div>
 
-          {/* Tile 2 */}
+          {/* Tile 2: Clinical Portrait 1 (Portrait - 1 col on lg & sm, matches height of Tile 1) */}
           <div
             onClick={() => setSelectedImage(environmentImages[1])}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[4/3] sm:aspect-auto sm:h-[220px] lg:h-[240px]"
+            className="sm:col-span-1 lg:col-span-1 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-xl hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[3/4] sm:aspect-auto sm:min-h-[440px] lg:min-h-[480px]"
           >
             <img
               src={environmentImages[1].url}
               alt={environmentImages[1].alt}
               loading="lazy"
-              className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-[center_15%] transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-              <span className="text-white text-xs font-medium tracking-wide">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <span className="text-white text-sm font-medium tracking-wide">
                 {environmentImages[1].title}
               </span>
             </div>
           </div>
 
-          {/* Tile 3 */}
+          {/* Tile 3: Clinical Portrait 2 (Portrait - 1 col on lg & sm) */}
           <div
             onClick={() => setSelectedImage(environmentImages[2])}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[4/3] sm:aspect-auto sm:h-[220px] lg:h-[240px]"
+            className="sm:col-span-1 lg:col-span-1 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[3/4] sm:min-h-[420px] lg:min-h-[460px]"
           >
             <img
               src={environmentImages[2].url}
               alt={environmentImages[2].alt}
               loading="lazy"
-              className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-[center_15%] transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-              <span className="text-white text-xs font-medium tracking-wide">
+              <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
                 {environmentImages[2].title}
               </span>
             </div>
           </div>
 
-          {/* Tile 4 */}
+          {/* Tile 4: Clinical Portrait 3 (Portrait - 1 col on lg & sm) */}
           <div
             onClick={() => setSelectedImage(environmentImages[3])}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[4/3] sm:aspect-[4/3] lg:aspect-[16/11]"
+            className="sm:col-span-1 lg:col-span-1 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[3/4] sm:min-h-[420px] lg:min-h-[460px]"
           >
             <img
               src={environmentImages[3].url}
@@ -146,16 +162,16 @@ const Gallery = () => {
               className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-              <span className="text-white text-xs font-medium tracking-wide">
+              <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
                 {environmentImages[3].title}
               </span>
             </div>
           </div>
 
-          {/* Tile 5 */}
+          {/* Tile 5: Clinical Portrait 4 (Portrait - 1 col on lg & sm) */}
           <div
             onClick={() => setSelectedImage(environmentImages[4])}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[4/3] sm:aspect-[4/3] lg:aspect-[16/11]"
+            className="sm:col-span-1 lg:col-span-1 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[3/4] sm:min-h-[420px] lg:min-h-[460px]"
           >
             <img
               src={environmentImages[4].url}
@@ -164,16 +180,16 @@ const Gallery = () => {
               className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-              <span className="text-white text-xs font-medium tracking-wide">
+              <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
                 {environmentImages[4].title}
               </span>
             </div>
           </div>
 
-          {/* Tile 6 */}
+          {/* Tile 6: Practice Ambiance & Architecture (Panoramic Landscape - 3 cols on lg, 2 cols on sm) */}
           <div
             onClick={() => setSelectedImage(environmentImages[5])}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[4/3] sm:aspect-[4/3] lg:aspect-[16/11]"
+            className="sm:col-span-2 lg:col-span-3 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-xl hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[16/9] md:aspect-[21/9] sm:min-h-[380px] lg:min-h-[420px]"
           >
             <img
               src={environmentImages[5].url}
@@ -181,27 +197,9 @@ const Gallery = () => {
               loading="lazy"
               className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-              <span className="text-white text-xs font-medium tracking-wide">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <span className="text-white text-sm font-medium tracking-wide">
                 {environmentImages[5].title}
-              </span>
-            </div>
-          </div>
-
-          {/* Tile 7 (Spans full row on 3-col desktop or standard on mobile) */}
-          <div
-            onClick={() => setSelectedImage(environmentImages[6])}
-            className="sm:col-span-2 lg:col-span-3 group relative overflow-hidden rounded-2xl border border-border/80 bg-background-secondary shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-500 cursor-pointer aspect-[16/9] sm:aspect-[21/9] lg:h-[280px]"
-          >
-            <img
-              src={environmentImages[6].url}
-              alt={environmentImages[6].alt}
-              loading="lazy"
-              className="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.01]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5 sm:p-6">
-              <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
-                {environmentImages[6].title}
               </span>
             </div>
           </div>

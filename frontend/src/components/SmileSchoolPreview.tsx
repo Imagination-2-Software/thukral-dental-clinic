@@ -31,7 +31,7 @@ const SmileSchoolPreview = () => {
           </div>
 
           <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-text-muted mb-3">
-            Smile School by Thukral
+            Smile School by Thukral Dental
           </p>
 
           <h2 

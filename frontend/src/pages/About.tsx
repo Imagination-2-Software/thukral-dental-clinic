@@ -44,8 +44,8 @@ const About = () => {
             <div className="w-full lg:w-1/2 relative opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-2xl border border-border/80 bg-background-secondary">
                 <img 
-                  src="https://res.cloudinary.com/hmjaaen2/image/upload/v1792670446/2d2f280f-ee74-4dfd-87d5-6bf214fb019c.png" 
-                  alt="Dr. Anchit Thukral - Lead Dentist & Aesthetic Specialist" 
+                  src="/thukral-why-img.jpg" 
+                  alt="Dr. Anchit Thukral - Lead Dentist" 
                   className="w-full h-full object-cover object-center"
                   loading="eager"
                 />
@@ -53,7 +53,7 @@ const About = () => {
               
               <div className="absolute -bottom-6 -left-6 md:bottom-8 md:-left-12 bg-background/90 backdrop-blur-md border border-border/50 p-4 rounded-xl shadow-xl z-20">
                 <span className="text-sm font-medium text-text uppercase tracking-wider block">
-                  Lead Dentist & Aesthetic Specialist
+                  MDS | Orthodontics 
                 </span>
               </div>
               
@@ -232,7 +232,7 @@ const About = () => {
                 THE STORY BEHIND THUKRAL
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-text mb-8">
-                Why Thukral?
+                Why TDAC?
               </h2>
               <div className="space-y-6 text-base md:text-lg text-text-muted leading-relaxed font-light">
                 <p>
@@ -250,7 +250,7 @@ const About = () => {
             <div className="w-full lg:w-1/2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-xl border border-border/80 bg-background-secondary">
                 <img
-                  src="https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/02.webp"
+                  src="/why-tdac.jpg"
                   alt="Thukral Dental & Aesthetic Clinic - Thoughtful patient care"
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
@@ -347,7 +347,7 @@ const About = () => {
             <div className="w-full lg:w-1/2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <div className="aspect-square w-full max-w-xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-border/80 bg-background-secondary">
                 <img
-                  src="https://res.cloudinary.com/hmjaaen2/image/upload/v1792669910/89cc7992-ed11-4020-82a5-99709a02d0d7.png"
+                  src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793619852/145827825_1515879695427999_8063118232200118372_n.jpg"
                   alt="Dr. Anchit Thukral - Beyond the White Coat"
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
@@ -365,7 +365,7 @@ const About = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute inset-0 pointer-events-none flex justify-center items-center overflow-hidden">
           <img
-            src="https://res.cloudinary.com/hmjaaen2/image/upload/v1792669371/logo.png"
+            src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793692667/202091-removebg-preview.png"
             alt="Thukral Dental Clinic Logo"
             className="w-[420px] sm:w-[540px] md:w-[640px] max-w-[85vw] h-auto object-contain opacity-15 brightness-0 invert select-none pointer-events-none"
             loading="lazy"

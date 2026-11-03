@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { X, CheckCircle } from 'lucide-react';
+import { X, CheckCircle, ExternalLink } from 'lucide-react';
 import { useAppointmentModal } from '../context/AppointmentModalContext';
 import { submitAppointmentApi } from '../services/api';
+import { generateAppointmentWhatsAppUrl } from '../utils/whatsapp';
 
 const TIME_SLOTS = [
   '10:00 AM',
@@ -40,23 +41,34 @@ const AppointmentPopup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [submittedWhatsappUrl, setSubmittedWhatsappUrl] = useState('');
 
-  // Prevent background scrolling when open
+  // Prevent background scrolling when open & handle Escape key
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
       setSubmitStatus('idle');
       setErrorMessage('');
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = '';
+      };
     } else {
       document.body.style.overflow = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isModalOpen]);
+  }, [isModalOpen, closeModal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent duplicate submissions
     setErrorMessage('');
 
     if (!formData.name.trim()) {
@@ -91,6 +103,23 @@ const AppointmentPopup = () => {
 
     setIsSubmitting(true);
 
+    // 1. Generate structured WhatsApp URL targeting official clinic number 918299719955
+    const waUrl = generateAppointmentWhatsAppUrl({
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      treatment: formData.treatment,
+      date: formData.date,
+      time: formData.time,
+      message: formData.message,
+    });
+
+    setSubmittedWhatsappUrl(waUrl);
+
+    // 2. Open WhatsApp in a new tab immediately (works on desktop and mobile)
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+    // 3. Persist appointment details to backend API
     try {
       await submitAppointmentApi({
         name: formData.name.trim(),
@@ -101,25 +130,12 @@ const AppointmentPopup = () => {
         treatment: formData.treatment,
         message: formData.message.trim() || undefined,
       });
+    } catch (err: any) {
+      console.warn('Backend appointment record note:', err);
+    } finally {
       setIsSubmitting(false);
       setSubmitStatus('success');
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        date: '',
-        time: '',
-        treatment: 'General Checkup',
-        message: '',
-      });
-      setTimeout(() => {
-        closeModal();
-        setSubmitStatus('idle');
-      }, 3000);
-    } catch (err: any) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setErrorMessage(err?.message || 'Unable to submit request. Please try again or call us.');
+      // Do NOT auto-close modal: keep it open so user sees instructions to press Send in WhatsApp
     }
   };
 
@@ -152,10 +168,61 @@ const AppointmentPopup = () => {
         </div>
         
         {submitStatus === 'success' ? (
-          <div className="bg-green-50 border border-green-200 text-green-800 p-8 rounded-xl text-center flex flex-col items-center">
-            <CheckCircle size={40} className="text-green-600 mb-3" />
-            <h4 className="text-xl font-medium mb-2">Request Received</h4>
-            <p className="text-sm text-green-700">Thank you! We will contact you shortly to confirm your appointment time.</p>
+          <div className="bg-background-secondary border border-border/80 p-6 sm:p-8 rounded-xl text-center flex flex-col items-center animate-fade-in">
+            <div className="w-16 h-16 rounded-full bg-[#25D366]/15 text-[#25D366] flex items-center justify-center mb-4 border border-[#25D366]/30">
+              <CheckCircle size={36} strokeWidth={2} />
+            </div>
+
+            <h4 className="text-2xl sm:text-3xl font-serif text-text mb-2">
+              Appointment Request Prepared
+            </h4>
+
+            <p className="text-sm sm:text-base text-text-muted font-light max-w-md mx-auto mb-6 leading-relaxed">
+              We have opened WhatsApp in a new tab with your pre-filled appointment request.
+            </p>
+
+            {/* Instruction to press Send in WhatsApp */}
+            <div className="w-full max-w-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200/90 dark:border-amber-900/60 rounded-xl p-4 text-left mb-6 shadow-xs">
+              <div className="flex items-start gap-3">
+                <span className="text-xl leading-none mt-0.5">📲</span>
+                <div className="text-xs sm:text-sm text-amber-950 dark:text-amber-200 leading-relaxed font-light">
+                  <strong className="font-semibold text-amber-900 dark:text-amber-100">Final Step Required: </strong>
+                  Please switch to the WhatsApp chat window and press <strong className="font-semibold underline">Send</strong> to deliver your appointment request to Thukral Dental &amp; Aesthetic Clinic.
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
+              <a
+                href={submittedWhatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-medium py-3.5 px-5 rounded-lg transition-all shadow-md hover:shadow-lg text-sm tracking-wide"
+              >
+                <span>Open WhatsApp Again</span>
+                <ExternalLink size={16} />
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  closeModal();
+                  setSubmitStatus('idle');
+                  setFormData({
+                    name: '',
+                    phone: '',
+                    email: '',
+                    date: '',
+                    time: '',
+                    treatment: 'General Checkup',
+                    message: '',
+                  });
+                }}
+                className="w-full sm:w-auto px-5 py-3.5 text-sm font-medium text-text-muted hover:text-text border border-border rounded-lg transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         ) : (
           <form className="space-y-6" onSubmit={handleSubmit}>

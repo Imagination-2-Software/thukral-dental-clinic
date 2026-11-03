@@ -11,13 +11,17 @@ import Contact from './pages/Contact';
 import WhyThukralPage from './pages/WhyThukralPage';
 import LearnPage from './pages/LearnPage';
 import CbctPage from './pages/CbctPage';
+import OpgPage from './pages/OpgPage';
+import LateralCephPage from './pages/LateralCephPage';
 import AdminDashboard from './pages/AdminDashboard';
 import { AdminAuthProvider } from './context/AdminAuthContext';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <AdminAuthProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Dedicated Admin Portal Route */}
           <Route path="/admin" element={<AdminDashboard />} />
@@ -32,6 +36,11 @@ function App() {
                   <Route path="/why-thukral" element={<WhyThukralPage />} />
                   <Route path="/treatments" element={<Treatments />} />
                   <Route path="/treatments/cbct" element={<CbctPage />} />
+                  <Route path="/diagnostic-imaging/cbct" element={<CbctPage />} />
+                  <Route path="/diagnostic-imaging/opg" element={<OpgPage />} />
+                  <Route path="/opg" element={<OpgPage />} />
+                  <Route path="/diagnostic-imaging/lateral-cephalogram" element={<LateralCephPage />} />
+                  <Route path="/lateral-cephalogram" element={<LateralCephPage />} />
                   <Route path="/appointment" element={<Appointment />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/learn" element={<LearnPage />} />

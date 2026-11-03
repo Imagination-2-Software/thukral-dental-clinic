@@ -10,6 +10,7 @@ export const TREATMENT_ASSETS = {
   hairAestheticProcedure: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/03.webp', // Image 03 (574x1020)
   laserAdvancedDeviceProcedure: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664624/06.webp', // Image 04 (471x1020)
   sterileSurgicalPrecision: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792664622/02.webp', // Image 05 (765x1020)
+  clinicalOralExamination: 'https://res.cloudinary.com/zvlxacfu/image/upload/v1790670701/46e68157-13ec-4f35-abd2-7fc3ea75dc21.png', // Dr. Anchit Clinical Oral Assessment (1024x1536)
   
   // Clinical Before & After Orthodontics & Restorative Records
   orthodonticDiastemaGapClosure: 'https://res.cloudinary.com/hmjaaen2/image/upload/v1792653468/9a78e42d-443a-4fbc-a653-d2842cb4c846.jpg', // Image 06 (1206x625)
@@ -114,34 +115,16 @@ const ALL_TREATMENT_ITEMS: LightboxItem[] = [
     description: 'Unhurried examination and transparent dialogue ensuring patient comfort and informed decisions from the first visit.',
     alt: 'Dr. Anchit Thukral conducting examination with young patient',
   },
-  // 8: Restorative - Sterile Surgery
+  // 8: Clinical Oral Health & Diagnostic Assessment
   {
-    id: 'item-sterile',
-    image: TREATMENT_ASSETS.sterileSurgicalPrecision,
-    title: 'Sterile Surgical Preparations',
-    category: 'Clinical Surgery & Safety',
-    description: 'Hospital-grade autoclaved instruments and rigorous surgical protocols maintaining an uncompromising sterile field.',
-    alt: 'Doctor preparing sterile surgical instruments in clinic',
+    id: 'item-clinical-examination',
+    image: TREATMENT_ASSETS.clinicalOralExamination,
+    title: 'Clinical Oral Assessment & Diagnostics',
+    category: 'Preventative & Clinical Dentistry',
+    description: 'Comprehensive chairside oral examination and diagnostic assessment evaluating dentition, periodontal tissue, and restorative needs.',
+    alt: 'Dr. Anchit Thukral performing a clinical oral examination and diagnostic dental assessment',
   },
-  // 9: Advanced - Laser
-  {
-    id: 'item-laser',
-    image: TREATMENT_ASSETS.laserAdvancedDeviceProcedure,
-    title: 'Laser & Advanced Clinical Technology',
-    category: 'Advanced Care',
-    description: 'Application of state-of-the-art medical devices for minimally invasive periodontal, aesthetic, and surgical treatments.',
-    alt: 'Dr. Anchit Thukral operating specialized medical laser device',
-  },
-  // 10: Advanced - Scalp Care
-  {
-    id: 'item-scalp',
-    image: TREATMENT_ASSETS.hairAestheticProcedure,
-    title: 'Specialized Scalp & Aesthetic Therapy',
-    category: 'Clinical Aesthetics',
-    description: 'Dedicated aesthetic treatment room equipped for targeted clinical scalp therapy and rejuvenation procedures.',
-    alt: 'Clinical aesthetic procedure in clinic treatment room',
-  },
-  // 11: Real Results - Case 01
+  // Real Results - Case 01
   {
     id: 'item-case-profile',
     image: TREATMENT_ASSETS.orthodonticProfileAlignment,
@@ -363,8 +346,8 @@ const TreatmentCard = ({
   </div>
 );
 
-// Transformation cases slice for the carousel (Cases 01 to 09, indices 11 to 19 in ALL_TREATMENT_ITEMS)
-const TRANSFORMATION_CASES = ALL_TREATMENT_ITEMS.slice(11, 20);
+// Transformation cases slice for the carousel (Cases 01 to 09, indices 9 to 17 in ALL_TREATMENT_ITEMS)
+const TRANSFORMATION_CASES = ALL_TREATMENT_ITEMS.slice(9, 18);
 
 const Treatments = () => {
   const location = useLocation();
@@ -558,7 +541,7 @@ const Treatments = () => {
               TREATMENTS &middot; SERVICES
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-text mb-6">
-              Comprehensive Dental & Aesthetic Care
+              Comprehensive Dental Care
             </h2>
             <p className="text-base md:text-lg text-text-muted leading-relaxed font-light max-w-2xl mx-auto">
               Explore our core treatment disciplines, from preventative care and orthodontics to complex smile reconstructions. Tap any card to view detailed clinical photographs in high resolution.
@@ -654,44 +637,17 @@ const Treatments = () => {
                 />
                 <TreatmentCard 
                   item={ALL_TREATMENT_ITEMS[8]}
-                  objectPosition="object-center"
+                  objectPosition="object-[center_35%]"
                   onOpenFullscreen={() => openLightbox(8)}
                 />
               </div>
             </div>
 
-            {/* Category 4: Advanced Aesthetic & Clinical Care (Items 9, 10) */}
+            {/* Category 4: 3D CBCT Dental Imaging Service Card */}
             <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               <div className="mb-8 flex items-center justify-between border-b border-border pb-4">
                 <div className="flex items-center gap-4">
                   <span className="text-xl font-serif text-primary">04 /</span>
-                  <h3 className="text-2xl md:text-3xl font-serif text-text tracking-[0.05em] uppercase">
-                    Advanced Laser & Clinical Aesthetics
-                  </h3>
-                </div>
-                <span className="text-xs text-text-muted uppercase tracking-wider hidden sm:inline">
-                  State-of-the-Art Technology
-                </span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                <TreatmentCard 
-                  item={ALL_TREATMENT_ITEMS[9]}
-                  objectPosition="object-center"
-                  onOpenFullscreen={() => openLightbox(9)}
-                />
-                <TreatmentCard 
-                  item={ALL_TREATMENT_ITEMS[10]}
-                  objectPosition="object-top"
-                  onOpenFullscreen={() => openLightbox(10)}
-                />
-              </div>
-            </div>
-
-            {/* Category 5: 3D CBCT Dental Imaging Service Card */}
-            <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-              <div className="mb-8 flex items-center justify-between border-b border-border pb-4">
-                <div className="flex items-center gap-4">
-                  <span className="text-xl font-serif text-primary">05 /</span>
                   <h3 className="text-2xl md:text-3xl font-serif text-text tracking-[0.05em] uppercase">
                     Advanced Diagnostics &amp; 3D Imaging
                   </h3>
@@ -805,7 +761,7 @@ const Treatments = () => {
                       className="w-full shrink-0 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 px-1 py-2"
                     >
                       {pageCases.map((caseItem, idxOnPage) => {
-                        const globalLightboxIndex = 11 + pageIdx * 3 + idxOnPage;
+                        const globalLightboxIndex = 9 + pageIdx * 3 + idxOnPage;
                         return (
                           <div key={caseItem.id} className="h-full">
                             <ClinicalCaseCard
@@ -900,6 +856,16 @@ const Treatments = () => {
         {/* Subtle background glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] opacity-30 pointer-events-none" />
         
+        {/* Watermark Logo Emblem in Light Shade */}
+        <div className="absolute inset-0 pointer-events-none flex justify-center items-center overflow-hidden">
+          <img
+            src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793692667/202091-removebg-preview.png"
+            alt="Thukral Clinic Emblem Watermark"
+            className="w-[360px] sm:w-[480px] md:w-[560px] lg:w-[620px] max-w-[85vw] h-auto object-contain opacity-[0.08] brightness-0 invert select-none pointer-events-none"
+            loading="lazy"
+          />
+        </div>
+
         <div className="page-container relative z-10 text-center flex flex-col items-center">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight mb-8 max-w-3xl">
             Let&apos;s create a healthier, <br className="hidden md:block" />

@@ -135,7 +135,7 @@ const WhyThukral = () => {
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FAFAF8] border border-[#E5DFD5] mb-5 shadow-xs">
             <span className="w-2 h-2 rounded-full bg-[#4A3B32] animate-pulse" />
             <span className="text-[11px] font-semibold tracking-[0.28em] uppercase text-[#4A3B32]">
-              THE THUKRAL EXPERIENCE
+              Portfolio
             </span>
           </div>
 
@@ -351,27 +351,27 @@ const WhyThukral = () => {
         </div>
 
         {/* ============================================================ */}
-        {/* PROMINENT TESTIMONIALS CALL TO ACTION */}
+        {/* PROMINENT OUR PORTFOLIO CALL TO ACTION STRIP */}
         {/* ============================================================ */}
-        <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E5DFD5]/80 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="max-w-xl">
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#4A3B32] block mb-1">
-              PATIENT EXPERIENCES
+        <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E5DFD5]/80 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 text-center md:text-left">
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#4A3B32] block mb-1.5">
+              OUR PORTFOLIO
             </span>
-            <p className="text-base sm:text-lg text-[#1A1A1A] font-serif font-medium">
-              Real experiences. A closer look at patient perspectives.
-            </p>
-            <p className="text-xs sm:text-sm text-[#6B625B] font-light mt-1">
-              Hear directly from individuals who entrusted their smiles to Thukral Dental & Aesthetic Clinic.
+            <h3 className="text-xl sm:text-2xl text-[#1A1A1A] font-serif font-medium leading-snug mb-2">
+              A Closer Look at Our Work.
+            </h3>
+            <p className="text-xs sm:text-sm text-[#6B625B] font-light leading-relaxed">
+              Explore our dental treatments, smile transformations and aesthetic results. Discover how we combine clinical expertise, precision and personalised care to create confident smiles.
             </p>
           </div>
 
           <Link
-            to="/testimonials"
-            className="inline-flex items-center justify-center gap-2.5 bg-[#4A3B32] text-[#FAFAF8] px-8 py-4 rounded-full text-sm font-medium tracking-wide hover:bg-[#3A2E26] shadow-md hover:shadow-xl transition-all duration-300 group shrink-0"
+            to="/treatments"
+            className="inline-flex items-center justify-center gap-2 bg-[#4A3B32] text-[#FAFAF8] px-8 py-4 rounded-full text-xs sm:text-sm font-medium tracking-wider uppercase hover:bg-[#3A2E26] shadow-md hover:shadow-xl transition-all duration-300 group shrink-0"
           >
-            <span>Read Patient Testimonials</span>
-            <span className="transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-base">
+            <span>EXPLORE OUR PORTFOLIO</span>
+            <span className="transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-sm sm:text-base">
               ↗
             </span>
           </Link>

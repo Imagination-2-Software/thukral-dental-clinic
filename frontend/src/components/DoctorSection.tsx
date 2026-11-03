@@ -8,7 +8,7 @@ const DoctorSection = () => {
               Dr. Anchit Thukral
             </h2>
             <p className="text-primary font-medium tracking-wide uppercase text-sm mb-8">
-              Lead Dentist & Aesthetic Specialist
+                MDS | Orthodontics 
             </p>
             
             <div className="space-y-6 text-lg text-text-muted font-light leading-relaxed mb-10">
@@ -27,11 +27,12 @@ const DoctorSection = () => {
           </div>
           
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-lg aspect-[3/4] bg-background border border-border rounded-lg overflow-hidden flex items-center justify-center">
+            <div className="relative w-full max-w-lg aspect-[3/4] bg-background border border-border rounded-2xl shadow-xl overflow-hidden flex items-center justify-center group">
               <img 
-                src="https://res.cloudinary.com/zvlxacfu/image/upload/v1790668147/228af05e-abc7-4bd3-a90c-699149f82de8.png" 
-                alt="Dr. Anchit Thukral" 
-                className="w-full h-full object-cover" 
+                src="/dr-anchit-thukral-portrait.jpg" 
+                alt="Dr. Anchit Thukral - MDS Orthodontics" 
+                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" 
+                loading="lazy"
               />
             </div>
           </div>

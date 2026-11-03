@@ -87,7 +87,7 @@ const ReviewsSection = () => {
             ))}
           </div>
           <p className="text-text-muted font-medium tracking-wide uppercase text-sm">
-            4.9 &starf; &middot; 138 Reviews
+            4.9 Stars &middot; 138 Google Reviews
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, GraduationCap, ShieldAlert, Sparkles, Filter } from 'lucide-react';
+import { ArrowDown, ArrowRight, GraduationCap, ShieldAlert, Sparkles, Filter } from 'lucide-react';
 import { INITIAL_EDUCATIONAL_VIDEOS, EDUCATION_CATEGORIES } from '../data/educationalVideos';
 import EducationalVideoCard from '../components/EducationalVideoCard';
 
@@ -12,7 +12,7 @@ const LearnPage = () => {
   // Update Page Title and Meta Description for SEO
   useEffect(() => {
     const originalTitle = document.title;
-    document.title = "Smile School by Thukral | Dental Education Hub | Thukral Dental";
+    document.title = "Smile School by Thukral Dental | Dental Education Hub | Thukral Dental";
     
     // Set or update meta description
     let metaDescription = document.querySelector('meta[name="description"]');
@@ -25,7 +25,7 @@ const LearnPage = () => {
     }
     metaDescription.setAttribute(
       'content',
-      'Smile School by Thukral: Clear answers to your dental questions. Discover bite-sized insights on oral hygiene, braces, aligners, and modern dentistry from Thukral Dental & Aesthetic Clinic.'
+      'Smile School by Thukral Dental: Clear answers to your dental questions. Discover bite-sized insights on oral hygiene, braces, aligners, and modern dentistry from Thukral Dental & Aesthetic Clinic.'
     );
 
     return () => {
@@ -71,12 +71,12 @@ const LearnPage = () => {
           <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary">
             <GraduationCap size={15} />
             <span className="text-xs font-semibold tracking-[0.25em] uppercase">
-              LEARN WITH THUKRAL &middot; SMILE SCHOOL
+              LEARN WITH THUKRAL DENTAL &middot; SMILE SCHOOL
             </span>
           </div>
 
           <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-text-muted mb-4 block">
-            Smile School by Thukral
+            Smile School by Thukral Dental
           </p>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-text mb-6 leading-[1.15]">
@@ -190,19 +190,45 @@ const LearnPage = () => {
             </div>
           </div>
 
-          {/* Consultation CTA Banner */}
+          {/* Instagram Follow CTA Banner */}
           <div className="mt-16 p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-background-secondary via-[#F9F6F0] to-[#EFE8DC] border border-border/80 shadow-sm text-center max-w-4xl mx-auto relative overflow-hidden">
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-text mb-4">
-              Have a Specific Dental Question?
+              Want to Learn More About Your Smile?
             </h3>
             <p className="text-sm sm:text-base text-text-muted font-light max-w-xl mx-auto mb-8">
-              Schedule a one-on-one consultation with Dr. Anchit Thukral at Thukral Dental &amp; Aesthetic Clinic in Varanasi to discuss your unique smile goals.
+              Follow us on Instagram for dental care tips, smile transformations, treatment insights, and the latest updates from Thukral Dental &amp; Aesthetic Clinic.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/appointment" className="btn-primary w-full sm:w-auto px-8 py-4 text-sm tracking-widest uppercase">
-                Book an Appointment &rarr;
-              </Link>
-              <Link to="/treatments" className="w-full sm:w-auto text-text border-b border-text/20 pb-1 hover:border-primary hover:text-primary transition-all font-medium text-xs tracking-widest uppercase py-3">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-sm font-semibold tracking-widest uppercase group shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+              >
+                <span className="w-5 h-5 rounded-[5px] bg-gradient-to-tr from-[#feda75] via-[#fa7e1e] via-[#d62976] via-[#962fbf] to-[#4f5bd5] flex items-center justify-center text-white shrink-0 shadow-xs group-hover:scale-110 transition-transform duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                  </svg>
+                </span>
+                <span>FOLLOW US ON INSTAGRAM</span>
+                <ArrowRight size={16} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              <Link
+                to="/treatments"
+                className="w-full sm:w-auto text-text border-b border-text/20 pb-1 hover:border-primary hover:text-primary transition-all font-medium text-xs tracking-widest uppercase py-2 sm:py-3"
+              >
                 Explore Our Treatments
               </Link>
             </div>

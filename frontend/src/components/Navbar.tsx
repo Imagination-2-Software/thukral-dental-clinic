@@ -45,8 +45,9 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
-    { name: 'Why Thukral', path: '/why-thukral' },
+    { name: 'Why TDAC', path: '/why-thukral' },
     { name: 'Treatments', path: '/treatments', hasDropdown: true },
+    { name: 'Diagnostic Imaging', path: '/diagnostic-imaging', hasDiagnosticDropdown: true },
     { name: 'Smile School', path: '/learn' },
     { name: 'Testimonials', path: '/testimonials' },
   ];
@@ -63,9 +64,9 @@ const Navbar = () => {
       <div className="page-container flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3 md:space-x-4 z-50">
           <img 
-            src="/logo.jpeg" 
+            src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793692667/202091-removebg-preview.png" 
             alt="Thukral Clinic Logo" 
-            className="h-10 md:h-12 w-auto object-contain mix-blend-multiply"
+            className="h-10 md:h-12 w-auto object-contain"
           />
           <div className="flex flex-col">
             <span className="font-serif font-bold text-xl md:text-2xl tracking-wide leading-tight text-text">
@@ -78,16 +79,58 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <ul className="flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-7">
+          <ul className="flex items-center space-x-4 lg:space-x-6 xl:space-x-7">
             {navLinks.map((link) => (
               <li key={link.name}>
-                {link.hasDropdown ? (
+                {link.hasDiagnosticDropdown ? (
+                  <div className="relative group">
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-1 text-xs lg:text-sm font-medium tracking-wide transition-colors text-text hover:text-primary cursor-pointer py-1"
+                    >
+                      <span>{link.name}</span>
+                      <ChevronDown size={14} className="transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+                    
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                      <div className="bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[220px] p-2 flex flex-col">
+                        <a
+                          href="/treatments/cbct"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
+                        >
+                          <span>CBCT Imaging</span>
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D ↗</span>
+                        </a>
+                        <a
+                          href="/opg"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
+                        >
+                          <span>OPG</span>
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic ↗</span>
+                        </a>
+                        <a
+                          href="/lateral-cephalogram"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
+                        >
+                          <span>Lateral Cephalogram</span>
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph ↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : link.hasDropdown ? (
                   <div className="relative group">
                     <NavLink 
                       to={link.path} 
                       className={({ isActive }) => 
-                        `inline-flex items-center gap-1 text-sm font-medium tracking-wide transition-colors ${
+                        `inline-flex items-center gap-1 text-xs lg:text-sm font-medium tracking-wide transition-colors ${
                           isActive ? 'text-primary border-b-2 border-primary pb-1' : 'text-text hover:text-primary'
                         }`
                       }
@@ -110,26 +153,13 @@ const Navbar = () => {
                         >
                           Transformations
                         </button>
-                        <NavLink
-                          to="/treatments/cbct"
-                          className={({ isActive }) =>
-                            `text-left px-4 py-3 text-sm font-medium rounded-lg transition-colors w-full flex items-center justify-between ${
-                              isActive
-                                ? 'text-primary bg-background-secondary font-semibold'
-                                : 'text-text hover:text-primary hover:bg-background-secondary'
-                            }`
-                          }
-                        >
-                          <span>CBCT Imaging</span>
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D</span>
-                        </NavLink>
                       </div>
                     </div>
                   </div>
                 ) : link.path.startsWith('/#') ? (
                   <a 
                     href={link.path} 
-                    className="text-text hover:text-primary transition-colors text-sm font-medium tracking-wide"
+                    className="text-text hover:text-primary transition-colors text-xs lg:text-sm font-medium tracking-wide"
                   >
                     {link.name}
                   </a>
@@ -138,7 +168,7 @@ const Navbar = () => {
                     to={link.path} 
                     end={link.path === '/'}
                     className={({ isActive }) => 
-                      `text-sm font-medium tracking-wide transition-colors ${
+                      `text-xs lg:text-sm font-medium tracking-wide transition-colors ${
                         isActive ? 'text-primary border-b-2 border-primary pb-1' : 'text-text hover:text-primary'
                       }`
                     }
@@ -151,7 +181,7 @@ const Navbar = () => {
           </ul>
           <Link 
             to="/appointment" 
-            className="btn-primary inline-block text-center cursor-pointer"
+            className="btn-primary inline-block text-center cursor-pointer text-xs lg:text-sm px-4 lg:px-6 py-2.5 lg:py-3 whitespace-nowrap"
           >
             Book Appointment
           </Link>
@@ -179,7 +209,11 @@ const Navbar = () => {
         {/* Menu Header (mirrors navbar inside overlay) */}
         <div className="flex justify-between items-center px-5 py-6 border-b border-border/10 shrink-0">
           <Link to="/" className="flex items-center space-x-3" onClick={() => setIsMobileMenuOpen(false)}>
-            <img src="/logo.jpeg" alt="Thukral Clinic Logo" className="h-10 w-auto object-contain mix-blend-multiply" />
+            <img 
+              src="https://res.cloudinary.com/zvlxacfu/image/upload/v1793692667/202091-removebg-preview.png" 
+              alt="Thukral Clinic Logo" 
+              className="h-10 w-auto object-contain" 
+            />
             <div className="flex flex-col">
               <span className="font-serif font-bold text-xl tracking-wide leading-tight text-text">THUKRAL</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-text-muted mt-0.5">Dental & Aesthetic</span>
@@ -199,7 +233,67 @@ const Navbar = () => {
           <ul className="flex flex-col space-y-7 w-full max-w-sm relative z-10">
             {navLinks.map((link, index) => (
               <li key={link.name} className="overflow-hidden shrink-0">
-                {link.hasDropdown ? (
+                {link.hasDiagnosticDropdown ? (
+                  <div className="flex flex-col space-y-4">
+                    <div
+                      className={`group flex items-baseline font-serif text-[32px] sm:text-4xl text-text transition-all duration-500 transform ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+                      style={{ transitionDelay: `${index * 60 + 100}ms` }}
+                    >
+                      <span className="text-xs sm:text-sm font-sans mr-4 mb-1 transition-colors tracking-widest text-text-muted/60">
+                        0{index + 1}
+                      </span>
+                      <span className="relative">
+                        {link.name}
+                      </span>
+                    </div>
+
+                    {/* Mobile Diagnostic Sub-items - opening in new tab */}
+                    <a
+                      href="/treatments/cbct"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+                      style={{ transitionDelay: `${index * 60 + 130}ms` }}
+                    >
+                      <span className="relative">
+                        CBCT Imaging
+                        <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
+                      </span>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D ↗</span>
+                    </a>
+
+                    <a
+                      href="/opg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+                      style={{ transitionDelay: `${index * 60 + 160}ms` }}
+                    >
+                      <span className="relative">
+                        OPG
+                        <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
+                      </span>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic ↗</span>
+                    </a>
+
+                    <a
+                      href="/lateral-cephalogram"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+                      style={{ transitionDelay: `${index * 60 + 190}ms` }}
+                    >
+                      <span className="relative">
+                        Lateral Cephalogram
+                        <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
+                      </span>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph ↗</span>
+                    </a>
+                  </div>
+                ) : link.hasDropdown ? (
                   <div className="flex flex-col space-y-4">
                     <NavLink 
                       to={link.path} 
@@ -242,23 +336,6 @@ const Navbar = () => {
                         <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
                       </span>
                     </button>
-                    <NavLink
-                      to="/treatments/cbct"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={({ isActive }) =>
-                        `group flex items-baseline font-serif text-[24px] sm:text-3xl transition-all duration-500 transform pl-12 text-left ${
-                          isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-                        } ${isActive ? 'text-primary' : 'text-text hover:text-primary'}`
-                      }
-                      style={{ transitionDelay: `${index * 60 + 190}ms` }}
-                    >
-                      {({ isActive }) => (
-                        <span className="relative">
-                          CBCT Imaging
-                          <span className={`absolute left-0 -bottom-1 h-[1px] bg-primary transition-all duration-500 ease-out ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-                        </span>
-                      )}
-                    </NavLink>
                   </div>
                 ) : link.path.startsWith('/#') ? (
                   <a 

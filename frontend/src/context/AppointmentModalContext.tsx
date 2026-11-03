@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 
 interface AppointmentModalContextType {
   isModalOpen: boolean;
@@ -11,7 +11,15 @@ const AppointmentModalContext = createContext<AppointmentModalContextType | unde
 export const AppointmentModalProvider = ({ children }: { children: ReactNode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Modal is now manually triggered via 'Book Appointment' buttons to prevent unsolicited popups/screens covering the view
+  // Auto-trigger popup 4 seconds after website loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsModalOpen(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const openModal = useCallback(() => {
     setIsModalOpen(true);
   }, []);
