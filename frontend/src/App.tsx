@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Treatments from './pages/Treatments';
@@ -35,6 +35,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/why-thukral" element={<WhyThukralPage />} />
                   <Route path="/treatments" element={<Treatments />} />
+                  <Route path="/diagnostic-imaging" element={<Navigate to="/diagnostic-imaging/cbct" replace />} />
                   <Route path="/treatments/cbct" element={<CbctPage />} />
                   <Route path="/diagnostic-imaging/cbct" element={<CbctPage />} />
                   <Route path="/diagnostic-imaging/opg" element={<OpgPage />} />
@@ -48,6 +49,7 @@ function App() {
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-and-conditions" element={<Terms />} />
                   <Route path="/testimonials" element={<Testimonials />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Layout>
             }

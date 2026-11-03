@@ -1,16 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
+  const [isTreatmentsOpen, setIsTreatmentsOpen] = useState(false);
+  const diagnosticDropdownRef = useRef<HTMLDivElement>(null);
+  const treatmentsDropdownRef = useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isDiagnosticActive = 
+    location.pathname.startsWith('/diagnostic-imaging') ||
+    location.pathname === '/treatments/cbct' ||
+    location.pathname === '/opg' ||
+    location.pathname === '/lateral-cephalogram';
 
   const handleDropdownItemClick = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
+    setIsTreatmentsOpen(false);
     
     if (location.pathname === '/treatments') {
       const section = document.getElementById(sectionId);
@@ -41,6 +53,33 @@ const Navbar = () => {
       document.body.style.overflow = '';
     };
   }, [isMobileMenuOpen]);
+
+  // Handle click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        diagnosticDropdownRef.current && 
+        !diagnosticDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDiagnosticOpen(false);
+      }
+      if (
+        treatmentsDropdownRef.current && 
+        !treatmentsDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsTreatmentsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close dropdowns on route changes
+  useEffect(() => {
+    setIsDiagnosticOpen(false);
+    setIsTreatmentsOpen(false);
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -84,51 +123,70 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <li key={link.name}>
                 {link.hasDiagnosticDropdown ? (
-                  <div className="relative group">
+                  <div 
+                    ref={diagnosticDropdownRef}
+                    className="relative group"
+                    onMouseEnter={() => setIsDiagnosticOpen(true)}
+                    onMouseLeave={() => setIsDiagnosticOpen(false)}
+                  >
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 text-xs lg:text-sm font-medium tracking-wide transition-colors text-text hover:text-primary cursor-pointer py-1"
+                      onClick={() => setIsDiagnosticOpen(prev => !prev)}
+                      className={`inline-flex items-center gap-1 text-xs lg:text-sm font-medium tracking-wide transition-colors cursor-pointer py-1 ${
+                        isDiagnosticActive ? 'text-primary border-b-2 border-primary pb-1' : 'text-text hover:text-primary'
+                      }`}
+                      aria-expanded={isDiagnosticOpen}
+                      aria-haspopup="true"
                     >
                       <span>{link.name}</span>
-                      <ChevronDown size={14} className="transition-transform duration-300 group-hover:rotate-180" />
+                      <ChevronDown size={14} className={`transition-transform duration-300 ${isDiagnosticOpen ? 'rotate-180' : 'group-hover:rotate-180'}`} />
                     </button>
                     
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <div 
+                      className={`absolute top-full left-0 pt-2 transition-all duration-300 transform z-50 ${
+                        isDiagnosticOpen 
+                          ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                          : 'opacity-0 invisible translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                      }`}
+                    >
                       <div className="bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[220px] p-2 flex flex-col">
-                        <a
-                          href="/treatments/cbct"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link
+                          to="/diagnostic-imaging/cbct"
+                          onClick={() => setIsDiagnosticOpen(false)}
                           className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
                         >
                           <span>CBCT Imaging</span>
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D ↗</span>
-                        </a>
-                        <a
-                          href="/opg"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D</span>
+                        </Link>
+                        <Link
+                          to="/diagnostic-imaging/opg"
+                          onClick={() => setIsDiagnosticOpen(false)}
                           className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
                         >
                           <span>OPG</span>
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic ↗</span>
-                        </a>
-                        <a
-                          href="/lateral-cephalogram"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic</span>
+                        </Link>
+                        <Link
+                          to="/diagnostic-imaging/lateral-cephalogram"
+                          onClick={() => setIsDiagnosticOpen(false)}
                           className="text-left px-4 py-3 text-sm font-medium text-text hover:text-primary hover:bg-background-secondary rounded-lg transition-colors w-full flex items-center justify-between group/item"
                         >
                           <span>Lateral Cephalogram</span>
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph ↗</span>
-                        </a>
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph</span>
+                        </Link>
                       </div>
                     </div>
                   </div>
                 ) : link.hasDropdown ? (
-                  <div className="relative group">
+                  <div 
+                    ref={treatmentsDropdownRef}
+                    className="relative group"
+                    onMouseEnter={() => setIsTreatmentsOpen(true)}
+                    onMouseLeave={() => setIsTreatmentsOpen(false)}
+                  >
                     <NavLink 
                       to={link.path} 
+                      onClick={() => setIsTreatmentsOpen(prev => !prev)}
                       className={({ isActive }) => 
                         `inline-flex items-center gap-1 text-xs lg:text-sm font-medium tracking-wide transition-colors ${
                           isActive ? 'text-primary border-b-2 border-primary pb-1' : 'text-text hover:text-primary'
@@ -136,10 +194,16 @@ const Navbar = () => {
                       }
                     >
                       {link.name}
-                      <ChevronDown size={14} className="transition-transform duration-300 group-hover:rotate-180" />
+                      <ChevronDown size={14} className={`transition-transform duration-300 ${isTreatmentsOpen ? 'rotate-180' : 'group-hover:rotate-180'}`} />
                     </NavLink>
                     
-                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <div 
+                      className={`absolute top-full left-0 pt-2 transition-all duration-300 transform z-50 ${
+                        isTreatmentsOpen 
+                          ? 'opacity-100 visible translate-y-0 pointer-events-auto' 
+                          : 'opacity-0 invisible translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto'
+                      }`}
+                    >
                       <div className="bg-background border border-border rounded-xl shadow-xl overflow-hidden min-w-[200px] p-2 flex flex-col">
                         <button 
                           onClick={(e) => handleDropdownItemClick(e, 'services')}
@@ -247,11 +311,9 @@ const Navbar = () => {
                       </span>
                     </div>
 
-                    {/* Mobile Diagnostic Sub-items - opening in new tab */}
-                    <a
-                      href="/treatments/cbct"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    {/* Mobile Diagnostic Sub-items */}
+                    <Link
+                      to="/diagnostic-imaging/cbct"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
                       style={{ transitionDelay: `${index * 60 + 130}ms` }}
@@ -260,13 +322,11 @@ const Navbar = () => {
                         CBCT Imaging
                         <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
                       </span>
-                      <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D ↗</span>
-                    </a>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-primary/80 bg-primary/10 px-2 py-0.5 rounded">3D</span>
+                    </Link>
 
-                    <a
-                      href="/opg"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to="/diagnostic-imaging/opg"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
                       style={{ transitionDelay: `${index * 60 + 160}ms` }}
@@ -275,13 +335,11 @@ const Navbar = () => {
                         OPG
                         <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
                       </span>
-                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic ↗</span>
-                    </a>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Panoramic</span>
+                    </Link>
 
-                    <a
-                      href="/lateral-cephalogram"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to="/diagnostic-imaging/lateral-cephalogram"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`group flex items-center justify-between font-serif text-[22px] sm:text-2xl text-text hover:text-primary transition-all duration-500 transform pl-12 text-left pr-4 ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
                       style={{ transitionDelay: `${index * 60 + 190}ms` }}
@@ -290,8 +348,8 @@ const Navbar = () => {
                         Lateral Cephalogram
                         <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full ease-out"></span>
                       </span>
-                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph ↗</span>
-                    </a>
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-text-muted bg-background-secondary px-2 py-0.5 rounded border border-border/60">Ceph</span>
+                    </Link>
                   </div>
                 ) : link.hasDropdown ? (
                   <div className="flex flex-col space-y-4">
